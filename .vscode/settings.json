@@ -1,0 +1,47 @@
+{
+  // Tema de color naranja
+
+  // Color personalizado solo para la UI (sin cambiar tema completo)
+  "workbench.colorCustomizations": {
+    // Activity Bar (barra de iconos vertical izquierda)
+    "activityBar.background": "#3b1018", // Fondo más oscuro acorde al tono
+    "activityBar.foreground": "#ef3556", // Iconos activos
+    "activityBar.inactiveForeground": "#b32940", // Iconos inactivos
+    "activityBar.activeBorder": "#ef3556", // Borde activo
+    "activityBar.border": "#ef3556", // Borde lateral
+
+    // Barra de estado (inferior)
+    "statusBar.background": "#ef3556", // Fondo principal
+    "statusBar.foreground": "#ffffff", // Texto claro para contraste
+    "statusBar.border": "#000000",
+    "statusBar.noFolderBackground": "#ef3556",
+    "statusBar.debuggingBackground": "#cc1f3a", // Versión más oscura para modo debug
+
+    "titleBar.activeBackground": "#ef3556",
+    "titleBar.activeForeground": "#ffffff",
+    "titleBar.inactiveBackground": "#3b1018",
+    "titleBar.inactiveForeground": "#b32940",
+
+    "statusBarItem.remoteBackground": "#ef3556", // Para entornos remotos (como WSL, SSH)
+    "statusBarItem.remoteForeground": "#ffffff"
+  },
+
+  // Configuración del tema de íconos Material Icon Theme
+  "material-icon-theme.folders.associations": {
+    "src": "nest", // ícono de NestJS
+    "app": "nest",
+    "controllers": "nest",
+    "services": "nest",
+    "modules": "nest"
+  },
+  "material-icon-theme.files.associations": {
+    "*.controller.ts": "nest",
+    "*.service.ts": "nest",
+    "*.module.ts": "nest"
+  },
+
+  // Preferencias personales (opcional)
+  "editor.fontSize": 14,
+  "editor.fontFamily": "Fira Code, monospace",
+  "editor.fontLigatures": true
+}
