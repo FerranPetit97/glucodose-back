@@ -1,30 +1,22 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 
-import { AppController } from './app.controller';
+import mikroOrmConfig from './config/mikro-orm.config';
+import { FoodModule } from './modules/food/food.module';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'development' ? '.env.dev' : '.env',
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DATABASE_HOST'),
-        port: configService.get<number>('DATABASE_PORT'),
-        username: configService.get<string>('DATABASE_USER'),
-        password: configService.get<string>('DATABASE_PASS'),
-        database: 'dev_glucodose_core_db',
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
-      }),
-      inject: [ConfigService],
+    MikroOrmModule.forRootAsync({
+      useFactory: async () => mikroOrmConfig,
     }),
+    FoodModule,
   ],
   controllers: [AppController],
   providers: [AppService],
