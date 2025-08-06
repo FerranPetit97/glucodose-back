@@ -13,10 +13,32 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d
 
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - '11434:11434'
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=http://0.0.0.0:11434
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    runtime: nvidia
+    restart: unless-stopped
+    entrypoint: /bin/sh
+    command: -c "ollama serve && echo '✅ Modelo phi listo. Iniciando servidor...' && echo '⏳ Descargando modelo phi...' && ollama pull phi"
+
   app:
     build: .
     depends_on:
       - db
+      - ollama
     ports:
       - '3000:3000'
     volumes:
@@ -26,8 +48,7 @@ services:
       - ./pnpm-lock.yaml:/app/pnpm-lock.yaml
       - ./wait-for-it.sh:/app/wait-for-it.sh
       - ./.env.production:/app/.env.production
-    environment:
-      NODE_ENV: production
 
 volumes:
   pgdata:
+  ollama_data:

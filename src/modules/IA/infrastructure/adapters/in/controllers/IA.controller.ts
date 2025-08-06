@@ -7,7 +7,9 @@ export class IAController {
   constructor(private readonly promptUseCase: PromptUseCase) {}
 
   @Post('chat')
-  async prompt(@Body() prompt: string): Promise<string | null> {
+  async prompt(@Body() body: { prompt: string }): Promise<string | null> {
+    const prompt = body.prompt;
+
     return this.promptUseCase.execute(prompt);
   }
 }

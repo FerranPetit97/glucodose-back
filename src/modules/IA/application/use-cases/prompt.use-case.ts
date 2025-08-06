@@ -12,6 +12,6 @@ export class PromptUseCase {
       stream: false,
     });
 
-    return response.data.response;
+    return response.data;
   }
 }

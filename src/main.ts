@@ -7,9 +7,10 @@ import axios from 'axios';
 
 async function checkIA(model: string): Promise<void> {
   try {
-    const res = await axios.post('http://localhost:11434/api/generate', {
+    const res = await axios.post(`${process.env.IA_URL}/api/generate`, {
       model,
-      prompt: 'Responde en español con respuesta corta y solo el numero con 21 digitos decimales: ¿Cuál es el número pi?',
+      prompt:
+        'Eres un asistente experto en matemáticas que responde solo con el número solicitado, en español. Pregunta: ¿Cuál es el número pi?Respuesta:',
       stream: false,
     });
 
@@ -56,7 +57,7 @@ async function bootstrap() {
 
     await app.listen(port);
 
-    await checkIA(model);
+    // await checkIA(model);
     console.log(`🚀 App running on http://localhost:${port}`);
   } catch (error) {
     console.error('Error during application bootstrap:', error);
