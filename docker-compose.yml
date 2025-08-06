@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: dev_glucodose_core_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+
+  app:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+      - ./package.json:/app/package.json
+      - ./pnpm-lock.yaml:/app/pnpm-lock.yaml
+      - ./wait-for-it.sh:/app/wait-for-it.sh
+      - ./.env.production:/app/.env.production
+    environment:
+      NODE_ENV: production
+
+volumes:
+  pgdata:

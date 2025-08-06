@@ -1,16 +1,19 @@
 {
-  "namespaces": ["core_data_foods"],
+  "namespaces": [
+    "core_data_foods"
+  ],
   "name": "public",
   "tables": [
     {
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid DEFAULT gen_random_uuid()",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "uuid_generate_v4()",
           "mappedType": "uuid"
         },
         "name": {
@@ -65,7 +68,9 @@
       "indexes": [
         {
           "keyName": "foods_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": true,
           "primary": true,

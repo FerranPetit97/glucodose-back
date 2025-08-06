@@ -3,12 +3,36 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import axios from 'axios';
+
+async function checkIA(model: string): Promise<void> {
+  try {
+    const res = await axios.post('http://localhost:11434/api/generate', {
+      model,
+      prompt: 'Responde en español con respuesta corta y solo el numero con 21 digitos decimales: ¿Cuál es el número pi?',
+      stream: false,
+    });
+
+    const respuesta = res.data?.response?.trim();
+    if (respuesta) {
+      console.log(`✅ IA activa. Modelo "${model}" respondió: "${respuesta}"`);
+    } else {
+      console.warn(`⚠️ IA activa. Modelo "${model}" no devolvió respuesta.`);
+    }
+  } catch (error) {
+    console.error(
+      `❌ Error al conectar con Ollama o el modelo "${model}" no está disponible.`,
+    );
+    console.error('Detalle:', error.message || error);
+  }
+}
 
 async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
 
     const configService = app.get(ConfigService);
+    const model = configService.get<string>('IA_MODEL') || 'phi';
 
     const config = new DocumentBuilder()
       .setTitle('API ejemplo')
@@ -18,7 +42,6 @@ async function bootstrap() {
       .build();
 
     const document = SwaggerModule.createDocument(app, config);
-
     SwaggerModule.setup('api', app, document);
 
     app.useGlobalPipes(
@@ -33,6 +56,7 @@ async function bootstrap() {
 
     await app.listen(port);
 
+    await checkIA(model);
     console.log(`🚀 App running on http://localhost:${port}`);
   } catch (error) {
     console.error('Error during application bootstrap:', error);

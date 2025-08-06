@@ -25,7 +25,7 @@ export default defineConfig({
     ),
   ],
   migrations: {
-    path: path.resolve(__dirname, '../migrations'),
+    path: path.resolve(__dirname, '../../migrations'),
     emit: 'ts',
   },
   extensions: [Migrator],

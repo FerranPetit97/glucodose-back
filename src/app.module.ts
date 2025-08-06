@@ -6,6 +6,7 @@ import mikroOrmConfig from './config/mikro-orm.config';
 import { FoodModule } from './modules/food/food.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
+import { IAModule } from './modules/IA/IA.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AppController } from './app.controller';
       useFactory: async () => mikroOrmConfig,
     }),
     FoodModule,
+    IAModule
   ],
   controllers: [AppController],
   providers: [AppService],
