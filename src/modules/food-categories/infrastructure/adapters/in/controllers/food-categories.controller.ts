@@ -47,9 +47,9 @@ export class FoodCategoriesController {
   }
 
   @Get(':id')
-  async getFoodCategoriesById(@Param('id') id: string): Promise<ResponseFoodCategoriesDto | null> {
+  async getFoodCategoriesById(@Param('id') id: string): Promise<ResponseFoodCategoriesDto> {
     const foodcategories = await this.getFoodCategoriesByIdUseCase.execute(id);
-    return foodcategories ? ResponseFoodCategoriesDto.fromDomain(foodcategories) : null;
+    return ResponseFoodCategoriesDto.fromDomain(foodcategories);
   }
 
   @Patch(':id')
@@ -58,11 +58,6 @@ export class FoodCategoriesController {
     @Body() body: UpdateFoodCategoriesDto,
   ): Promise<ResponseFoodCategoriesDto> {
     const updated = await this.updateFoodCategoriesUseCase.execute(id, body);
-
-    if (!updated) {
-      throw new Error(`Food category with id ${id} not found`);
-    }
-
     return ResponseFoodCategoriesDto.fromDomain(updated);
   }
 }
