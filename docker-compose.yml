@@ -12,14 +12,14 @@ services:
       - ./db/init:/docker-entrypoint-initdb.d
 
   ollama:
-    image: ollama/ollama
+    build:
+      context: ./docker/ollama
     container_name: ollama
     ports:
       - '11434:11434'
     volumes:
       - ollama_data:/root/.ollama
     environment:
-      - OLLAMA_HOST=http://0.0.0.0:11434
       - IA_MODEL=${IA_MODEL}
     deploy:
       resources:
@@ -30,8 +30,6 @@ services:
               capabilities: [gpu]
     runtime: nvidia
     restart: unless-stopped
-    entrypoint: /bin/sh
-    command: -c "ollama serve && echo '✅ Modelo ${IA_MODEL} listo. Iniciando servidor...' && echo '⏳ Descargando modelo ${IA_MODEL} ...' && ollama pull ${IA_MODEL}"
 
   app:
     build: .
@@ -47,6 +45,8 @@ services:
       - ./pnpm-lock.yaml:/app/pnpm-lock.yaml
       - ./wait-for-it.sh:/app/wait-for-it.sh
       - ./.env.production:/app/.env.production
+    command:
+      ['/bin/sh', '-c', '/app/wait-for-it.sh db:5432 ollama:11434 pnpm start']
 
 volumes:
   pgdata:
