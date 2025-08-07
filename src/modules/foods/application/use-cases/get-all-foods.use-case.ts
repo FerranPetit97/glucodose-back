@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Foods } from '@foods/domain/entities/foods.entity';
+import { Foods } from '@app/modules/foods/domain/entities/foods.entity';
 import {
   FOODS_REPOSITORY,
   FoodsRepository,

@@ -3,7 +3,7 @@ import {
   FOODS_REPOSITORY,
   FoodsRepository,
 } from '@foods/domain/repositories/foods.repository';
-import { Foods } from '@foods/domain/entities/foods.entity';
+import { Foods } from '@app/modules/foods/domain/entities/foods.entity';
 import { CreateFoodsDto } from '../dtos/create-foods.dto';
 import { FoodCategoryMappings } from 'src/modules/food-category-mappings/domain/entities/food-category-mappings.entity';
 import {

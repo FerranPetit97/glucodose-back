@@ -5,7 +5,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Foods } from '@foods/domain/entities/foods.entity';
+import { Foods } from '@app/modules/foods/domain/entities/foods.entity';
 import { FoodCategoryMappingsOrmEntity } from '@foodCategoryMappings/infrastructure/adapters/out/orm/entities/food-category-mappings.orm-entity';
 
 @Entity({ tableName: 'foods', schema: 'core_data_foods' })

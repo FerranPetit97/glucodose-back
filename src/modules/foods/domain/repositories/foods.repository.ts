@@ -10,6 +10,6 @@ export interface FoodsRepository {
     limit?: number,
   ): Promise<{ data: Foods[]; total: number; page: number; limit: number }>;
   findById(id: string): Promise<Foods | null>;
-  save(foods: CreateFoodsDto): Promise<Foods>;
+  save(patient: CreateFoodsDto): Promise<Foods>;
   updateById(id: string, dto: UpdateFoodsDto): Promise<Foods>;
 }

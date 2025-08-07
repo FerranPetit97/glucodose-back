@@ -24,6 +24,7 @@
       "@foods/*": ["src/modules/foods/*"],
       "@foodCategories/*": ["src/modules/food-categories/*"],
       "@foodCategoryMappings/*": ["src/modules/food-category-mappings/*"],
+      "@patients/*": ["src/modules/patients/*"],
       "@IA/*": ["src/modules/IA/*"]
     }
   }

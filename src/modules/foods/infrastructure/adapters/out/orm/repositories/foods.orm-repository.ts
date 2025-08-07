@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/postgresql';
 
-import { Foods } from '@foods/domain/entities/foods.entity';
+import { Foods } from '@app/modules/foods/domain/entities/foods.entity';
 import { FoodsRepository } from '@foods/domain/repositories/foods.repository';
 import { CreateFoodsDto } from '@foods/application/dtos/create-foods.dto';
 import { FoodsOrmEntity } from '../entities/foods.orm-entity';

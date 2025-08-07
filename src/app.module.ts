@@ -10,6 +10,7 @@ import { AppController } from './app.controller';
 import { IAModule } from './modules/IA/IA.module';
 import { FoodsModule } from './modules/foods/foods.module';
 import { FoodCategoriesModule } from './modules/food-categories/food-categories.module';
+import { PatientsModule } from './modules/patients/patients.module';
 
 @Module({
   imports: [
@@ -22,9 +23,10 @@ import { FoodCategoriesModule } from './modules/food-categories/food-categories.
     }),
     FoodsModule,
     FoodCategoriesModule,
+    PatientsModule,
     IAModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

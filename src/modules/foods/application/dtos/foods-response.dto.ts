@@ -1,4 +1,4 @@
-import { Foods } from '@foods/domain/entities/foods.entity';
+import { Foods } from '@app/modules/foods/domain/entities/foods.entity';
 
 export class FoodsResponseDto {
   id: string;

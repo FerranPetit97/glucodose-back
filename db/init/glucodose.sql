@@ -5,18 +5,28 @@
 -- Dumped from database version 17.5
 -- Dumped by pg_dump version 17.5
 
--- Started on 2025-08-06 21:49:04
+-- Started on 2025-08-07 11:24:59
 
 SET statement_timeout = 0;
+
 SET lock_timeout = 0;
+
 SET idle_in_transaction_session_timeout = 0;
+
 SET transaction_timeout = 0;
+
 SET client_encoding = 'UTF8';
+
 SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
+
+SELECT pg_catalog.set_config ('search_path', '', false);
+
 SET check_function_bodies = false;
+
 SET xmloption = content;
+
 SET client_min_messages = warning;
+
 SET row_security = off;
 
 --
@@ -25,7 +35,6 @@ SET row_security = off;
 --
 
 CREATE SCHEMA audit_data;
-
 
 ALTER SCHEMA audit_data OWNER TO postgres;
 
@@ -37,14 +46,12 @@ ALTER SCHEMA audit_data OWNER TO postgres;
 
 COMMENT ON SCHEMA audit_data IS 'Auditoría: accesos y cambios en los datos';
 
-
 --
 -- TOC entry 8 (class 2615 OID 16656)
 -- Name: biz_data_dose_recommendations; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
 CREATE SCHEMA biz_data_dose_recommendations;
-
 
 ALTER SCHEMA biz_data_dose_recommendations OWNER TO postgres;
 
@@ -56,14 +63,12 @@ ALTER SCHEMA biz_data_dose_recommendations OWNER TO postgres;
 
 COMMENT ON SCHEMA biz_data_dose_recommendations IS 'Reglas de negocio: recomendaciones personalizadas de dosis';
 
-
 --
 -- TOC entry 9 (class 2615 OID 16657)
 -- Name: core_data_doses; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
 CREATE SCHEMA core_data_doses;
-
 
 ALTER SCHEMA core_data_doses OWNER TO postgres;
 
@@ -75,14 +80,12 @@ ALTER SCHEMA core_data_doses OWNER TO postgres;
 
 COMMENT ON SCHEMA core_data_doses IS 'Datos principales: guías y mappings de dosis';
 
-
 --
 -- TOC entry 10 (class 2615 OID 16658)
 -- Name: core_data_foods; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
 CREATE SCHEMA core_data_foods;
-
 
 ALTER SCHEMA core_data_foods OWNER TO postgres;
 
@@ -94,14 +97,12 @@ ALTER SCHEMA core_data_foods OWNER TO postgres;
 
 COMMENT ON SCHEMA core_data_foods IS 'Datos principales: alimentos, categorías y nutrientes';
 
-
 --
 -- TOC entry 11 (class 2615 OID 16659)
 -- Name: core_data_measurements; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
 CREATE SCHEMA core_data_measurements;
-
 
 ALTER SCHEMA core_data_measurements OWNER TO postgres;
 
@@ -113,14 +114,12 @@ ALTER SCHEMA core_data_measurements OWNER TO postgres;
 
 COMMENT ON SCHEMA core_data_measurements IS 'Datos principales: mediciones de glucosa e insulina';
 
-
 --
 -- TOC entry 12 (class 2615 OID 16660)
 -- Name: core_data_patients; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
 CREATE SCHEMA core_data_patients;
-
 
 ALTER SCHEMA core_data_patients OWNER TO postgres;
 
@@ -132,7 +131,6 @@ ALTER SCHEMA core_data_patients OWNER TO postgres;
 
 COMMENT ON SCHEMA core_data_patients IS 'Datos principales: información de pacientes y alergias';
 
-
 --
 -- TOC entry 2 (class 3079 OID 16661)
 -- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
@@ -140,15 +138,13 @@ COMMENT ON SCHEMA core_data_patients IS 'Datos principales: información de paci
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 
-
 --
 -- TOC entry 5037 (class 0 OID 0)
 -- Dependencies: 2
--- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
-
 
 --
 -- TOC entry 252 (class 1255 OID 16672)
@@ -164,7 +160,6 @@ BEGIN
 END;
 $$;
 
-
 ALTER FUNCTION core_data_foods.set_updated_at() OWNER TO postgres;
 
 SET default_tablespace = '';
@@ -177,7 +172,7 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE audit_data.access_logs (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     user_id uuid NOT NULL,
     access_time timestamp without time zone DEFAULT now() NOT NULL,
     action character varying(255) NOT NULL,
@@ -185,7 +180,6 @@ CREATE TABLE audit_data.access_logs (
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE audit_data.access_logs OWNER TO postgres;
 
@@ -195,7 +189,7 @@ ALTER TABLE audit_data.access_logs OWNER TO postgres;
 --
 
 CREATE TABLE audit_data.change_logs (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     entity character varying(100) NOT NULL,
     entity_id uuid NOT NULL,
     change_type character varying(50) NOT NULL,
@@ -206,7 +200,6 @@ CREATE TABLE audit_data.change_logs (
     updated_at timestamp without time zone DEFAULT now()
 );
 
-
 ALTER TABLE audit_data.change_logs OWNER TO postgres;
 
 --
@@ -215,7 +208,7 @@ ALTER TABLE audit_data.change_logs OWNER TO postgres;
 --
 
 CREATE TABLE biz_data_dose_recommendations.dose_recommendations (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     patient_id uuid NOT NULL,
     dose_id uuid NOT NULL,
     conditions text,
@@ -223,7 +216,6 @@ CREATE TABLE biz_data_dose_recommendations.dose_recommendations (
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE biz_data_dose_recommendations.dose_recommendations OWNER TO postgres;
 
@@ -233,14 +225,13 @@ ALTER TABLE biz_data_dose_recommendations.dose_recommendations OWNER TO postgres
 --
 
 CREATE TABLE core_data_doses.dose_guidelines (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     description text NOT NULL,
     units character varying(50) NOT NULL,
     insulin_type character varying(50),
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_doses.dose_guidelines OWNER TO postgres;
 
@@ -250,14 +241,13 @@ ALTER TABLE core_data_doses.dose_guidelines OWNER TO postgres;
 --
 
 CREATE TABLE core_data_doses.dose_mappings (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     food_id uuid NOT NULL,
     dose_id uuid NOT NULL,
-    dose_amount numeric(8,3) NOT NULL,
+    dose_amount numeric(8, 3) NOT NULL,
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_doses.dose_mappings OWNER TO postgres;
 
@@ -267,13 +257,12 @@ ALTER TABLE core_data_doses.dose_mappings OWNER TO postgres;
 --
 
 CREATE TABLE core_data_foods.food_categories (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     name character varying(100) NOT NULL,
     description text,
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_foods.food_categories OWNER TO postgres;
 
@@ -289,7 +278,6 @@ CREATE TABLE core_data_foods.food_category_mappings (
     updated_at timestamp without time zone DEFAULT now()
 );
 
-
 ALTER TABLE core_data_foods.food_category_mappings OWNER TO postgres;
 
 --
@@ -298,15 +286,14 @@ ALTER TABLE core_data_foods.food_category_mappings OWNER TO postgres;
 --
 
 CREATE TABLE core_data_foods.food_nutrients (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     food_id uuid NOT NULL,
     nutrient character varying(100) NOT NULL,
-    amount numeric(8,3) NOT NULL,
+    amount numeric(8, 3) NOT NULL,
     unit character varying(20) NOT NULL,
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_foods.food_nutrients OWNER TO postgres;
 
@@ -316,16 +303,15 @@ ALTER TABLE core_data_foods.food_nutrients OWNER TO postgres;
 --
 
 CREATE TABLE core_data_foods.foods (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     name character varying(255) NOT NULL,
-    carbs numeric(6,2) NOT NULL,
-    proteins numeric(6,2) NOT NULL,
-    fats numeric(6,2) NOT NULL,
-    calories numeric(8,2) NOT NULL,
+    carbs numeric(6, 2) NOT NULL,
+    proteins numeric(6, 2) NOT NULL,
+    fats numeric(6, 2) NOT NULL,
+    calories numeric(8, 2) NOT NULL,
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_foods.foods OWNER TO postgres;
 
@@ -335,15 +321,14 @@ ALTER TABLE core_data_foods.foods OWNER TO postgres;
 --
 
 CREATE TABLE core_data_measurements.glucose_measurements (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     patient_id uuid NOT NULL,
-    value numeric(6,2) NOT NULL,
+    value numeric(6, 2) NOT NULL,
     measurement_time timestamp without time zone NOT NULL,
     context character varying(50),
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_measurements.glucose_measurements OWNER TO postgres;
 
@@ -353,15 +338,14 @@ ALTER TABLE core_data_measurements.glucose_measurements OWNER TO postgres;
 --
 
 CREATE TABLE core_data_measurements.insulin_doses (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     patient_id uuid NOT NULL,
-    dose_amount numeric(8,3) NOT NULL,
+    dose_amount numeric(8, 3) NOT NULL,
     dose_time timestamp without time zone NOT NULL,
     insulin_type character varying(50),
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_measurements.insulin_doses OWNER TO postgres;
 
@@ -371,16 +355,15 @@ ALTER TABLE core_data_measurements.insulin_doses OWNER TO postgres;
 --
 
 CREATE TABLE core_data_patients.daily_dose_events (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     patient_id uuid NOT NULL,
     dose_id uuid NOT NULL,
-    dose_amount numeric(8,3) NOT NULL,
+    dose_amount numeric(8, 3) NOT NULL,
     event_time timestamp without time zone DEFAULT now() NOT NULL,
     notes text,
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_patients.daily_dose_events OWNER TO postgres;
 
@@ -390,16 +373,15 @@ ALTER TABLE core_data_patients.daily_dose_events OWNER TO postgres;
 --
 
 CREATE TABLE core_data_patients.daily_food_events (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     patient_id uuid NOT NULL,
     food_id uuid NOT NULL,
-    amount numeric(8,2) NOT NULL,
+    amount numeric(8, 2) NOT NULL,
     event_time timestamp without time zone DEFAULT now() NOT NULL,
     notes text,
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_patients.daily_food_events OWNER TO postgres;
 
@@ -409,12 +391,11 @@ ALTER TABLE core_data_patients.daily_food_events OWNER TO postgres;
 --
 
 CREATE TABLE core_data_patients.patient_allergies (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     allergy character varying(255) NOT NULL,
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_patients.patient_allergies OWNER TO postgres;
 
@@ -430,7 +411,6 @@ CREATE TABLE core_data_patients.patient_allergy_mappings (
     updated_at timestamp without time zone DEFAULT now()
 );
 
-
 ALTER TABLE core_data_patients.patient_allergy_mappings OWNER TO postgres;
 
 --
@@ -445,7 +425,6 @@ CREATE TABLE core_data_patients.patient_diet_mappings (
     updated_at timestamp without time zone DEFAULT now()
 );
 
-
 ALTER TABLE core_data_patients.patient_diet_mappings OWNER TO postgres;
 
 --
@@ -454,12 +433,11 @@ ALTER TABLE core_data_patients.patient_diet_mappings OWNER TO postgres;
 --
 
 CREATE TABLE core_data_patients.patient_diets (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     diet_plan text NOT NULL,
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_patients.patient_diets OWNER TO postgres;
 
@@ -469,17 +447,17 @@ ALTER TABLE core_data_patients.patient_diets OWNER TO postgres;
 --
 
 CREATE TABLE core_data_patients.patients (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4 () NOT NULL,
     name character varying(255) NOT NULL,
     email character varying(255),
     phone character varying(50),
     dob date NOT NULL,
     diagnosis_date date,
     type_diabetes character varying(50),
+    active boolean DEFAULT true NOT NULL,
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now()
 );
-
 
 ALTER TABLE core_data_patients.patients OWNER TO postgres;
 
@@ -489,9 +467,9 @@ ALTER TABLE core_data_patients.patients OWNER TO postgres;
 -- Data for Name: access_logs; Type: TABLE DATA; Schema: audit_data; Owner: postgres
 --
 
+
 COPY audit_data.access_logs (id, user_id, access_time, action, ip_address, created_at, updated_at) FROM stdin;
 \.
-
 
 --
 -- TOC entry 5009 (class 0 OID 16680)
@@ -499,9 +477,9 @@ COPY audit_data.access_logs (id, user_id, access_time, action, ip_address, creat
 -- Data for Name: change_logs; Type: TABLE DATA; Schema: audit_data; Owner: postgres
 --
 
+
 COPY audit_data.change_logs (id, entity, entity_id, change_type, changed_by, change_time, details, created_at, updated_at) FROM stdin;
 \.
-
 
 --
 -- TOC entry 5010 (class 0 OID 16689)
@@ -509,9 +487,9 @@ COPY audit_data.change_logs (id, entity, entity_id, change_type, changed_by, cha
 -- Data for Name: dose_recommendations; Type: TABLE DATA; Schema: biz_data_dose_recommendations; Owner: postgres
 --
 
+
 COPY biz_data_dose_recommendations.dose_recommendations (id, patient_id, dose_id, conditions, notes, created_at, updated_at) FROM stdin;
 \.
-
 
 --
 -- TOC entry 5011 (class 0 OID 16697)
@@ -519,9 +497,9 @@ COPY biz_data_dose_recommendations.dose_recommendations (id, patient_id, dose_id
 -- Data for Name: dose_guidelines; Type: TABLE DATA; Schema: core_data_doses; Owner: postgres
 --
 
+
 COPY core_data_doses.dose_guidelines (id, description, units, insulin_type, created_at, updated_at) FROM stdin;
 \.
-
 
 --
 -- TOC entry 5012 (class 0 OID 16705)
@@ -529,9 +507,9 @@ COPY core_data_doses.dose_guidelines (id, description, units, insulin_type, crea
 -- Data for Name: dose_mappings; Type: TABLE DATA; Schema: core_data_doses; Owner: postgres
 --
 
+
 COPY core_data_doses.dose_mappings (id, food_id, dose_id, dose_amount, created_at, updated_at) FROM stdin;
 \.
-
 
 --
 -- TOC entry 5013 (class 0 OID 16711)
@@ -539,7 +517,15 @@ COPY core_data_doses.dose_mappings (id, food_id, dose_id, dose_amount, created_a
 -- Data for Name: food_categories; Type: TABLE DATA; Schema: core_data_foods; Owner: postgres
 --
 
-COPY core_data_foods.food_categories (id, name, description, created_at, updated_at) FROM stdin;
+COPY core_data_foods.food_categories (
+    id,
+    name,
+    description,
+    created_at,
+    updated_at
+)
+FROM stdin;
+
 7e6b7c78-5597-4024-ae70-e282ef8a6b85	dairy	Dairy products are foods made from milk, such as cheese, yogurt, and butter. They are a primary source of calcium, protein, and essential vitamins, commonly used in both sweet and savory dishes.	2025-08-06 17:54:48.15891	2025-08-06 17:54:48.15891
 ec77f0d2-c083-4bb6-a13a-ad9663c474ef	rice	Rice is a staple grain used in cuisines around the world. It comes in various types such as white, brown, basmati, and jasmine, and serves as a versatile base for countless dishes, both savory and sweet.	2025-08-06 17:56:26.080091	2025-08-06 17:56:26.080091
 c1219e57-2884-4279-bbde-3d1b4d8e4582	tubers	Tubers are underground plant structures that store nutrients. Common examples include potatoes, sweet potatoes, and yams. They are rich in carbohydrates and serve as a key energy source in many traditional diets worldwide.	2025-08-06 17:56:48.90169	2025-08-06 17:56:48.90169
@@ -569,6 +555,10 @@ dbe214f5-ef81-482e-b673-5aa310779c03	ec77f0d2-c083-4bb6-a13a-ad9663c474ef	2025-0
 99344cac-15b2-44f9-bde2-e4c98c54edf6	ec77f0d2-c083-4bb6-a13a-ad9663c474ef	2025-08-06 21:42:10.224691	2025-08-06 21:42:10.224691
 c4a09faf-8138-4df7-ab72-b12ae07a833a	7e6b7c78-5597-4024-ae70-e282ef8a6b85	2025-08-06 21:47:01.690571	2025-08-06 21:47:01.690571
 c4a09faf-8138-4df7-ab72-b12ae07a833a	ec77f0d2-c083-4bb6-a13a-ad9663c474ef	2025-08-06 21:47:01.7028	2025-08-06 21:47:01.7028
+a93c92ef-bca1-4e41-8cb4-17dcb356b089	7e6b7c78-5597-4024-ae70-e282ef8a6b85	2025-08-06 23:02:20.30749	2025-08-06 23:02:20.30749
+a93c92ef-bca1-4e41-8cb4-17dcb356b089	ec77f0d2-c083-4bb6-a13a-ad9663c474ef	2025-08-06 23:02:20.318286	2025-08-06 23:02:20.318286
+d70c9ce7-9aa2-44fe-8433-462b6728ea69	7e6b7c78-5597-4024-ae70-e282ef8a6b85	2025-08-07 01:17:13.810109	2025-08-07 01:17:13.810109
+d70c9ce7-9aa2-44fe-8433-462b6728ea69	ec77f0d2-c083-4bb6-a13a-ad9663c474ef	2025-08-07 01:17:13.824013	2025-08-07 01:17:13.824013
 \.
 
 
@@ -589,12 +579,14 @@ COPY core_data_foods.food_nutrients (id, food_id, nutrient, amount, unit, create
 --
 
 COPY core_data_foods.foods (id, name, carbs, proteins, fats, calories, created_at, updated_at) FROM stdin;
-3206b958-cde4-4fce-a45a-03c143421aaa	cuajada	10.00	5.00	2.00	100.00	2025-07-27 17:42:42.601175	2025-07-27 17:42:42.601175
 3377a8e8-8408-445c-89e6-ae21c4c77521	flan	20.00	5.00	2.00	100.00	2025-07-27 18:14:02.423301	2025-07-27 18:37:30.669251
 00bfc4f5-c524-4b19-b1bd-b153a0a39f6e	Helado de Hielo	23.00	23.00	23.00	23.00	2025-08-06 21:22:39.441388	2025-08-06 21:22:39.441388
 dbe214f5-ef81-482e-b673-5aa310779c03	Helado sin azucar	23.00	23.00	23.00	23.00	2025-08-06 21:30:55.339777	2025-08-06 21:30:55.339777
 99344cac-15b2-44f9-bde2-e4c98c54edf6	Leche	23.00	23.00	23.00	23.00	2025-08-06 21:42:10.186516	2025-08-06 21:42:10.186516
 c4a09faf-8138-4df7-ab72-b12ae07a833a	Leche Condensada	23.00	23.00	23.00	23.00	2025-08-06 21:47:01.641565	2025-08-06 21:47:01.641565
+a93c92ef-bca1-4e41-8cb4-17dcb356b089	Leche en polvo	23.00	23.00	23.00	23.00	2025-08-06 23:02:20.280436	2025-08-06 23:02:20.280436
+d70c9ce7-9aa2-44fe-8433-462b6728ea69	Kefir	23.00	23.00	23.00	23.00	2025-08-07 01:17:13.76894	2025-08-07 01:17:13.76894
+3206b958-cde4-4fce-a45a-03c143421aaa	cuajada	10.00	5.00	6.00	10.00	2025-07-27 17:42:42.601175	2025-08-07 02:39:25.855212
 \.
 
 
@@ -1214,9 +1206,8 @@ ALTER TABLE ONLY core_data_patients.patient_diet_mappings
     ADD CONSTRAINT patient_diet_mappings_patient_id_fkey FOREIGN KEY (patient_id) REFERENCES core_data_patients.patients(id) ON DELETE CASCADE;
 
 
--- Completed on 2025-08-06 21:49:07
+-- Completed on 2025-08-07 11:25:03
 
 --
 -- PostgreSQL database dump complete
 --
-

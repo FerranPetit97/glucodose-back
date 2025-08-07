@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:15
@@ -22,6 +20,7 @@ services:
       - ollama_data:/root/.ollama
     environment:
       - OLLAMA_HOST=http://0.0.0.0:11434
+      - IA_MODEL=${IA_MODEL}
     deploy:
       resources:
         reservations:
@@ -32,7 +31,7 @@ services:
     runtime: nvidia
     restart: unless-stopped
     entrypoint: /bin/sh
-    command: -c "ollama serve && echo '✅ Modelo phi listo. Iniciando servidor...' && echo '⏳ Descargando modelo phi...' && ollama pull phi"
+    command: -c "ollama serve && echo '✅ Modelo ${IA_MODEL} listo. Iniciando servidor...' && echo '⏳ Descargando modelo ${IA_MODEL} ...' && ollama pull ${IA_MODEL}"
 
   app:
     build: .
