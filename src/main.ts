@@ -12,7 +12,7 @@ async function checkIA(model: string): Promise<void> {
       {
         model,
         prompt:
-          'Eres un asistente experto en matemáticas que responde solo con el número solicitado, en español. Pregunta: ¿Cuál es el número pi?Respuesta:',
+          'Respondeme solo con el número con 21 decimales de pi.',
         stream: false,
       },
     );
