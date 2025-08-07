@@ -9,6 +9,7 @@ import { GetAllFoodCategoriesUseCase } from './application/use-cases/get-all-foo
 import { GetFoodCategoriesByIdUseCase } from './application/use-cases/get-food-categories-by-id.use-case';
 import { CreateFoodCategoriesUseCase } from './application/use-cases/create-food-categories.use-case';
 import { UpdateFoodCategoriesUseCase } from './application/use-cases/update-food-categories.use-case';
+import { FoodCategoryValidationService } from './application/services/food-category-validation.service';
 
 import { FOOD_CATEGORIES_REPOSITORY } from './domain/repositories/food-categories.repository';
 
@@ -19,6 +20,7 @@ import { FOOD_CATEGORIES_REPOSITORY } from './domain/repositories/food-categorie
       provide: FOOD_CATEGORIES_REPOSITORY,
       useClass: FoodCategoriesOrmRepository,
     },
+    FoodCategoryValidationService,
     GetAllFoodCategoriesUseCase,
     GetFoodCategoriesByIdUseCase,
     CreateFoodCategoriesUseCase,
