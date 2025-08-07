@@ -49,6 +49,20 @@ export class FoodCategoriesOrmRepository implements FoodCategoriesRepository {
     );
   }
 
+  async findByName(name: string): Promise<FoodCategories | null> {
+    const foodCategoriesOrm = await this.em.findOne(FoodCategoriesOrmEntity, {
+      name: name.trim(),
+    });
+    
+    if (!foodCategoriesOrm) return null;
+
+    return FoodCategories.fromPersistence(
+      foodCategoriesOrm.id,
+      foodCategoriesOrm.name,
+      foodCategoriesOrm.description,
+    );
+  }
+
   async save(foodCategories: FoodCategories): Promise<FoodCategories> {
     try {
       let ormEntity: FoodCategoriesOrmEntity;
