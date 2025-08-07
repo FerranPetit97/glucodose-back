@@ -67,7 +67,8 @@ async function bootstrap() {
 
     await app.listen(port);
 
-    // await checkIA(model);
+    await checkIA(model);
+
     console.log(`🚀 App running on http://localhost:${port}`);
   } catch (error) {
     console.error('Error during application bootstrap:', error);
