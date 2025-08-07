@@ -1,10 +1,10 @@
 import { Controller, Post, Body } from '@nestjs/common';
 
-import { PromptUseCase } from '../../../../application/use-cases/prompt.use-case';
+import { PromptUseCase } from '@IA/application/use-cases/prompt.use-case';
 
 @Controller('ia')
 export class IAController {
-  constructor(private readonly promptUseCase: PromptUseCase) {}
+  constructor(private readonly promptUseCase: PromptUseCase) { }
 
   @Post('chat')
   async prompt(@Body() body: { prompt: string }): Promise<string | null> {

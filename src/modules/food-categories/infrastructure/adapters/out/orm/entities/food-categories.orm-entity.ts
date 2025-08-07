@@ -5,14 +5,13 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { FoodCategories } from '../../../../../domain/entities/food-categories.entity';
-import { CreateFoodCategoriesDto } from '../../../../../application/dtos/create-food-categories.dto';
-import { FoodCategoryMappingsOrmEntity } from 'src/modules/food-category-mappings/infrastructure/adapters/out/orm/entities/food-category-mappings.orm-entity';
+import { FoodCategories } from '@foodCategories/domain/entities/food-categories.entity';
+import { FoodCategoryMappingsOrmEntity } from '@foodCategoryMappings/infrastructure/adapters/out/orm/entities/food-category-mappings.orm-entity';
 
 @Entity({ tableName: 'food_categories', schema: 'core_data_foods' })
 export class FoodCategoriesOrmEntity {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
-  id?: string;
+  id!: string;
 
   @Property()
   name!: string;
@@ -24,10 +23,10 @@ export class FoodCategoriesOrmEntity {
   foodMappings = new Collection<FoodCategoryMappingsOrmEntity>(this);
 
   toDomain(): FoodCategories {
-    return FoodCategories.restore(this.id, this.name, this.description);
+    return FoodCategories.fromPersistence(this.id, this.name, this.description);
   }
 
-  static fromDomain(domain: CreateFoodCategoriesDto): FoodCategoriesOrmEntity {
+  static fromDomain(domain: FoodCategories): FoodCategoriesOrmEntity {
     const orm = new FoodCategoriesOrmEntity();
     orm.name = domain.name;
     orm.description = domain.description;

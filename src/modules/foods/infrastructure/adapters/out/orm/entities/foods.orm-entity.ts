@@ -5,14 +5,13 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { Foods } from '../../../../../domain/entities/foods.entity';
-import { CreateFoodsDto } from 'src/modules/foods/application/dtos/create-foods.dto';
-import { FoodCategoryMappingsOrmEntity } from 'src/modules/food-category-mappings/infrastructure/adapters/out/orm/entities/food-category-mappings.orm-entity';
+import { Foods } from '@foods/domain/entities/foods.entity';
+import { FoodCategoryMappingsOrmEntity } from '@foodCategoryMappings/infrastructure/adapters/out/orm/entities/food-category-mappings.orm-entity';
 
 @Entity({ tableName: 'foods', schema: 'core_data_foods' })
 export class FoodsOrmEntity {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
-  id?: string;
+  id!: string;
 
   @Property()
   name!: string;
@@ -36,28 +35,30 @@ export class FoodsOrmEntity {
     const foodDomain = new Foods(
       this.id,
       this.name,
-      this.carbs,
-      this.proteins,
-      this.fats,
-      this.calories,
+      Number(this.carbs),
+      Number(this.proteins),
+      Number(this.fats),
+      Number(this.calories),
     );
 
-    const categoryNames = this.categoryMappings
+    const categoryIds = this.categoryMappings
       .getItems()
-      .map((mapping) => mapping.category.name);
+      .map((mapping) => mapping.category?.id)
+      .filter((id): id is string => typeof id === 'string');
 
-    foodDomain.setCategories(categoryNames);
+    foodDomain.setCategories(categoryIds);
 
     return foodDomain;
   }
 
-  static fromDomain(domain: CreateFoodsDto): FoodsOrmEntity {
+  static fromDomain(domain: Foods): FoodsOrmEntity {
     const orm = new FoodsOrmEntity();
+    if (domain.id) orm.id = domain.id;
     orm.name = domain.name;
-    orm.carbs = domain.carbs;
-    orm.proteins = domain.proteins;
-    orm.fats = domain.fats;
-    orm.calories = domain.calories;
+    orm.carbs = Number(domain.carbs);
+    orm.proteins = Number(domain.proteins);
+    orm.fats = Number(domain.fats);
+    orm.calories = Number(domain.calories);
     return orm;
   }
 }

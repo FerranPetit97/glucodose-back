@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   FOODS_REPOSITORY,
   FoodsRepository,
-} from '../../domain/repositories/foods.repository';
-import { Foods } from '../../domain/entities/foods.entity';
+} from '@foods/domain/repositories/foods.repository';
+import { Foods } from '@foods/domain/entities/foods.entity';
 import { CreateFoodsDto } from '../dtos/create-foods.dto';
 import { FoodCategoryMappings } from 'src/modules/food-category-mappings/domain/entities/food-category-mappings.entity';
 import {
@@ -26,10 +26,9 @@ export class CreateFoodsUseCase {
 
     @Inject(FOOD_CATEGORIES_REPOSITORY)
     private readonly foodCategoriesRepository: FoodCategoriesRepository,
-  ) {}
+  ) { }
 
   async execute(dto: CreateFoodsDto): Promise<Foods> {
-    console.log(dto);
     const food = Foods.create(
       dto.name,
       dto.carbs,
@@ -56,7 +55,7 @@ export class CreateFoodsUseCase {
 
       const mapping = FoodCategoryMappings.create(savedFood.id!, category.id);
       await this.foodCategoryMappingsRepository.save(mapping);
-      categoryNames.push(category.name);
+      categoryNames.push(category.id);
     }
 
     savedFood.setCategories(categoryNames);

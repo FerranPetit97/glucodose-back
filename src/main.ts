@@ -7,12 +7,15 @@ import axios from 'axios';
 
 async function checkIA(model: string): Promise<void> {
   try {
-    const res = await axios.post(`${process.env.IA_URL}/api/generate`, {
-      model,
-      prompt:
-        'Eres un asistente experto en matemáticas que responde solo con el número solicitado, en español. Pregunta: ¿Cuál es el número pi?Respuesta:',
-      stream: false,
-    });
+    const res = await axios.post<{ response?: string }>(
+      `${process.env.IA_URL}/api/generate`,
+      {
+        model,
+        prompt:
+          'Eres un asistente experto en matemáticas que responde solo con el número solicitado, en español. Pregunta: ¿Cuál es el número pi?Respuesta:',
+        stream: false,
+      },
+    );
 
     const respuesta = res.data?.response?.trim();
     if (respuesta) {
@@ -21,10 +24,17 @@ async function checkIA(model: string): Promise<void> {
       console.warn(`⚠️ IA activa. Modelo "${model}" no devolvió respuesta.`);
     }
   } catch (error) {
-    console.error(
-      `❌ Error al conectar con Ollama o el modelo "${model}" no está disponible.`,
-    );
-    console.error('Detalle:', error.message || error);
+    if (error instanceof Error) {
+      console.error(
+        `❌ Error al conectar con Ollama o el modelo "${model}" no está disponible.`,
+      );
+      console.error('Detalle:', error.message);
+    } else {
+      console.error(
+        `❌ Error al conectar con Ollama o el modelo "${model}" no está disponible.`,
+      );
+      console.error('Detalle:', error);
+    }
   }
 }
 

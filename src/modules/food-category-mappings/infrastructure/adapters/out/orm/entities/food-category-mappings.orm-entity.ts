@@ -1,8 +1,9 @@
 import { Entity, ManyToOne, Unique } from '@mikro-orm/core';
-import { FoodCategoriesOrmEntity } from 'src/modules/food-categories/infrastructure/adapters/out/orm/entities/food-categories.orm-entity';
-import { FoodCategoryMappings } from 'src/modules/food-category-mappings/domain/entities/food-category-mappings.entity';
-import { FoodsOrmEntity } from 'src/modules/foods/infrastructure/adapters/out/orm/entities/foods.orm-entity';
 import { EntityManager } from '@mikro-orm/postgresql';
+
+import { FoodCategoriesOrmEntity } from '@foodCategories/infrastructure/adapters/out/orm/entities/food-categories.orm-entity';
+import { FoodCategoryMappings } from '@foodCategoryMappings/domain/entities/food-category-mappings.entity';
+import { FoodsOrmEntity } from '@foods/infrastructure/adapters/out/orm/entities/foods.orm-entity';
 
 @Entity({ tableName: 'food_category_mappings', schema: 'core_data_foods' })
 @Unique({ properties: ['food', 'category'] })
@@ -29,6 +30,6 @@ export class FoodCategoryMappingsOrmEntity {
   }
 
   toDomain(): FoodCategoryMappings {
-    return new FoodCategoryMappings(this.food.id!, this.category.id!);
+    return new FoodCategoryMappings(this.food.id, this.category.id!);
   }
 }

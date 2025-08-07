@@ -1,5 +1,3 @@
-import { FoodCategories } from 'src/modules/food-categories/domain/entities/food-categories.entity';
-
 export class Foods {
   constructor(
     public readonly id: string | undefined,
@@ -9,30 +7,49 @@ export class Foods {
     public readonly fats: number,
     public readonly calories: number,
     private categories: string[] = [],
-  ) {}
+  ) { }
 
   static create(
     name: string,
-    carbs: number,
-    proteins: number,
-    fats: number,
-    calories: number,
+    carbs: number | string,
+    proteins: number | string,
+    fats: number | string,
+    calories: number | string,
   ): Foods {
-    return new Foods(undefined, name, carbs, proteins, fats, calories);
+    return new Foods(
+      undefined,
+      name,
+      Number(carbs),
+      Number(proteins),
+      Number(fats),
+      Number(calories)
+    );
   }
 
-  static restore(
-    id: string | undefined,
+  static fromPersistence(
+    id: string,
     name: string,
-    carbs: number,
-    proteins: number,
-    fats: number,
-    calories: number,
+    carbs: number | string,
+    proteins: number | string,
+    fats: number | string,
+    calories: number | string,
+    categories: string[] = [],
   ): Foods {
-    return new Foods(id, name, carbs, proteins, fats, calories);
+    return new Foods(
+      id,
+      name,
+      Number(carbs),
+      Number(proteins),
+      Number(fats),
+      Number(calories),
+      categories
+    );
   }
 
-  setCategories(categories: string[]) {
+  setCategories(categories: string[] | undefined) {
+    if (!categories || !Array.isArray(categories)) {
+      throw new Error('Categories must be an array');
+    }
     this.categories = categories;
   }
 

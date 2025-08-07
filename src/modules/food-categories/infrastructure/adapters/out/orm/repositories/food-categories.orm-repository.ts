@@ -1,22 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/postgresql';
 
-import { FoodCategories } from '../../../../../domain/entities/food-categories.entity';
-import { FoodCategoriesRepository } from '../../../../../domain/repositories/food-categories.repository';
+import { FoodCategories } from '@foodCategories/domain/entities/food-categories.entity';
+import { FoodCategoriesRepository } from '@foodCategories/domain/repositories/food-categories.repository';
 import { FoodCategoriesOrmEntity } from '../entities/food-categories.orm-entity';
 
 @Injectable()
 export class FoodCategoriesOrmRepository implements FoodCategoriesRepository {
-  constructor(private readonly em: EntityManager) {}
+  constructor(private readonly em: EntityManager) { }
 
-  async findAll(): Promise<FoodCategories[]> {
-    const ormEntities = await this.em.find(FoodCategoriesOrmEntity, {});
-    return ormEntities.map((e) => e.toDomain());
+  async findAll(
+    page = 1,
+    limit = 10,
+  ): Promise<{ data: FoodCategories[]; total: number; page: number; limit: number }> {
+
+    const [foodCategoriesOrm, total] = await this.em.findAndCount(
+      FoodCategoriesOrmEntity,
+      {},
+      {
+        limit,
+        offset: (page - 1) * limit,
+      },
+    );
+
+    return {
+      data: foodCategoriesOrm.map((foodCategoriesOrm) => {
+        return FoodCategories.fromPersistence(
+          foodCategoriesOrm.id,
+          foodCategoriesOrm.name,
+          foodCategoriesOrm.description,
+        );
+      }),
+      total,
+      page,
+      limit,
+    };
   }
 
   async findById(id: string): Promise<FoodCategories | null> {
-    const ormEntity = await this.em.findOne(FoodCategoriesOrmEntity, { id });
-    return ormEntity ? ormEntity.toDomain() : null;
+    const foodCategoriesOrm = await this.em.findOne(FoodCategoriesOrmEntity, id
+    );
+    if (!foodCategoriesOrm) return null;
+
+    return FoodCategories.fromPersistence(
+      foodCategoriesOrm.id,
+      foodCategoriesOrm.name,
+      foodCategoriesOrm.description,
+    );
   }
 
   async save(foodCategories: FoodCategories): Promise<FoodCategories> {

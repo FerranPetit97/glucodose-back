@@ -18,7 +18,7 @@ import { FoodCategoriesModule } from './modules/food-categories/food-categories.
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
     }),
     MikroOrmModule.forRootAsync({
-      useFactory: async () => mikroOrmConfig,
+      useFactory: () => mikroOrmConfig,
     }),
     FoodsModule,
     FoodCategoriesModule,

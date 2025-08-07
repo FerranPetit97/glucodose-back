@@ -16,6 +16,15 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/*": ["src/*"],
+      "@modules/*": ["src/modules/*"],
+      "@config/*": ["src/config/*"],
+      "@foods/*": ["src/modules/foods/*"],
+      "@foodCategories/*": ["src/modules/food-categories/*"],
+      "@foodCategoryMappings/*": ["src/modules/food-category-mappings/*"],
+      "@IA/*": ["src/modules/IA/*"]
+    }
   }
 }

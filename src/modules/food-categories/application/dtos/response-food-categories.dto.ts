@@ -1,9 +1,19 @@
-import { FoodCategories } from '../../domain/entities/food-categories.entity';
+import { FoodCategories } from '@foodCategories/domain/entities/food-categories.entity';
 
 export class ResponseFoodCategoriesDto {
   id!: string;
   name!: string;
   description!: string;
+
+  constructor(
+    id: string,
+    name: string,
+    description: string,
+  ) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+  }
 
   static fromDomain(foodCategories: FoodCategories): ResponseFoodCategoriesDto {
     if (!foodCategories.id) {
@@ -12,10 +22,7 @@ export class ResponseFoodCategoriesDto {
       );
     }
 
-    const dto = new ResponseFoodCategoriesDto();
-    dto.id = foodCategories.id;
-    dto.name = foodCategories.name;
-    dto.description = foodCategories.description;
-    return dto;
+    return new ResponseFoodCategoriesDto(foodCategories.id, foodCategories.name, foodCategories.description);
   }
+
 }
