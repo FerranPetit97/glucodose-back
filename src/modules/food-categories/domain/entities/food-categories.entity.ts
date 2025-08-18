@@ -24,4 +24,14 @@ export class FoodCategories {
     return new FoodCategories(id, name, description);
   }
 
+  updateDetails(
+    name: string,
+    description: string,
+  ): FoodCategories {
+    return new FoodCategories(
+      this.id,
+      name,
+      description,
+    );
+  }
 }
